@@ -1,6 +1,7 @@
 package robot.lianjia
 
 import org.openqa.selenium.By
+import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.interactions.Actions
 
@@ -17,6 +18,7 @@ fun main(args: Array<String>) {
     System.setProperty("webdriver.chrome.driver", "C:/Program Files (x86)/Google/Chrome/Application/chromedriver.exe")
     val driver = ChromeDriver()
     driver.get("http://bj.lianjia.com/xiaoqu/dongcheng/")
+    driver.detectCaptcha()
 
     while (true) {
         val links = driver.findElements(By.xpath("//div[@class='info']/div[@class='title']/a"))
@@ -25,6 +27,7 @@ fun main(args: Array<String>) {
             it.click()
             //driver.navigate().to(it.getAttribute("href"))
             driver.switchTo().window(driver.windowHandles.filter { it != driver.windowHandle }.first())
+            driver.detectCaptcha()
 
             Thread.sleep(3000)
             val elt = driver.findElement(By.xpath("//div[@class='xiaoquInfoItem'][span[@class='xiaoquInfoLabel']='物业费用']/span[@class='xiaoquInfoContent']"))
@@ -39,5 +42,18 @@ fun main(args: Array<String>) {
         driver.executeScript("window.scrollBy(0, 100)")
         elt.click()
 
+    }
+}
+
+fun WebDriver.detectCaptcha() {
+    Thread.sleep(1000)
+    while(this.currentUrl.contains("captcha")){
+        println("请选择验证码，任意键继续")
+        System.`in`.read()
+        if(this.currentUrl.contains("captcha")){
+            println("验证失败")
+        }else{
+            println("验证成功")
+        }
     }
 }
