@@ -34,8 +34,8 @@ object GfRobot_Combats_glo1 {
         M.go()
         M.setUnits()
         M.battle(true)
-        GfFunctions.end_battle()
-        GfFunctions.handleSupport()
+        GfFuncs.end_battle()
+        GfFuncs.handleSupport()
     }
 
 
@@ -95,7 +95,7 @@ object GfRobot_Combats_glo1 {
         }
 
         fun round2(fairy: Boolean) {
-            GfFunctions.toTop1()
+            GfFuncs.toTop1()
             robot.click(GfButtons.battle.plan).wait(300)
             robot.click(B.spot2).wait(300)
             robot.click(B.spot3).wait(300)
@@ -107,7 +107,7 @@ object GfRobot_Combats_glo1 {
         }
 
         fun round3(fairy: Boolean) {
-            GfFunctions.toTop1()
+            GfFuncs.toTop1()
             robot.click(GfButtons.battle.plan).wait(300)
             robot.click(B.spot4).wait(300)
             robot.click(B.spot3).wait(300)

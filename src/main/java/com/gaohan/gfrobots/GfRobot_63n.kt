@@ -40,10 +40,10 @@ object GfRobot_63n {
         M.battle(fairy)
         if (supply) {
             M.supply_dog()
-            GfFunctions.stop_battle_yes_exit()
-            GfFunctions.handleSupport()
+            GfFuncs.stop_battle_yes_exit()
+            GfFuncs.handleSupport()
         } else {
-            GfFunctions.stop_battle_no_exit()
+            GfFuncs.stop_battle_no_exit()
         }
         supply = !supply
     }
@@ -112,11 +112,11 @@ object GfRobot_63n {
         fun supply_dog() {
             val airport = B.airport_dog
             val preset = GfButtons.formation.preset_2
-            GfFunctions.formation_5(false, airport, preset)
-            GfFunctions.setUnit(airport)
-            GfFunctions.supply(airport)
-            GfFunctions.retreat(airport)
-            GfFunctions.formation_5(true, airport, preset)
+            GfFuncs.formation_5(false, airport, preset)
+            GfFuncs.setUnit(airport)
+            GfFuncs.supply(airport)
+            GfFuncs.retreat(airport)
+            GfFuncs.formation_5(true, airport, preset)
         }
     }
 }

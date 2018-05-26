@@ -2,7 +2,7 @@ package com.gaohan.gfrobots
 
 var firstTime = true
 
-object GfFunctions {
+object GfFuncs {
     fun formation_5(battle: Boolean, airport: RobotButton, preset: RobotButton) {
         robot.click(airport).wait(500)
         robot.click(GfButtons.battle.formation).wait(4500)

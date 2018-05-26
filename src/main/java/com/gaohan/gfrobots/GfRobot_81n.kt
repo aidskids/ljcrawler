@@ -24,7 +24,7 @@ object GfRobot_81n {
     fun cycle() {
         M.go()
         M.battle()
-        GfFunctions.handleSupport()
+        GfFuncs.handleSupport()
     }
 
     object M {
@@ -52,30 +52,30 @@ object GfRobot_81n {
         }
 
         fun battle() {
-            GfFunctions.toTop1()
-            GfFunctions.formation_5(false, B.cat, GfButtons.formation.preset_2)
+            GfFuncs.toTop1()
+            GfFuncs.formation_5(false, B.cat, GfButtons.formation.preset_2)
             setUnits()
-            GfFunctions.supply(B.cat)
-            GfFunctions.retreat(B.cat)
-            GfFunctions.stop_battle_no_exit()
+            GfFuncs.supply(B.cat)
+            GfFuncs.retreat(B.cat)
+            GfFuncs.stop_battle_no_exit()
 
-            GfFunctions.toTop1()
-            GfFunctions.formation_5(true, B.cat, GfButtons.formation.preset_2)
+            GfFuncs.toTop1()
+            GfFuncs.formation_5(true, B.cat, GfButtons.formation.preset_2)
             setUnits()
             round1()
-            GfFunctions.stop_battle_yes_exit()
-            GfFunctions.handleSupport()
+            GfFuncs.stop_battle_yes_exit()
+            GfFuncs.handleSupport()
         }
 
         fun setUnits() {
-            GfFunctions.toTop1()
-            GfFunctions.setUnit(B.cat)
-            GfFunctions.setUnit(B.dog)
+            GfFuncs.toTop1()
+            GfFuncs.setUnit(B.cat)
+            GfFuncs.setUnit(B.dog)
             robot.click(GfButtons.common.confirm).wait(4500)
         }
 
         fun round1() {
-            if (fairy) GfFunctions.fairy(B.cat)
+            if (fairy) GfFuncs.fairy(B.cat)
             robot.click(GfButtons.battle.plan).wait(300)
             robot.click(B.cat).wait(300)
             robot.click(B.spot1).wait(300)
@@ -86,8 +86,8 @@ object GfRobot_81n {
             robot.click(B.spot6).wait(300)
             robot.click(GfButtons.common.confirm).waitForSec(145)
 //            robot.click(GfButtons.common.confirm).clickForSec(GfButtons.battle.blank, 0)
-            GfFunctions.toTop1()
-            GfFunctions.retreat(B.spot6)
+            GfFuncs.toTop1()
+            GfFuncs.retreat(B.spot6)
         }
     }
 }

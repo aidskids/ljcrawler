@@ -33,7 +33,7 @@ object GfRobot_Combats_glo2 {
     fun cycle() {
         M.go()
         M.battle()
-        GfFunctions.handleSupport()
+        GfFuncs.handleSupport()
     }
 
     object M {
@@ -73,21 +73,21 @@ object GfRobot_Combats_glo2 {
             round2()
             round3()
             round4()
-            GfFunctions.end_battle()
+            GfFuncs.end_battle()
         }
 
         fun setUnits() {
-            GfFunctions.toBottom1()
-            GfFunctions.setUnit(B.spot0)
+            GfFuncs.toBottom1()
+            GfFuncs.setUnit(B.spot0)
             robot.click(GfButtons.common.confirm).wait(3500)
         }
 
         fun round1() {
-            GfFunctions.supply(B.spot0)
+            GfFuncs.supply(B.spot0)
             robot.click(B.spot1).wait(2500)
             robot.click(GfButtons.battle.blank).wait(300)
-            GfFunctions.setUnit(B.spot0)
-            GfFunctions.supply(B.spot0)
+            GfFuncs.setUnit(B.spot0)
+            GfFuncs.supply(B.spot0)
 
             robot.click(GfButtons.common.confirm).clickForSec(GfButtons.battle.blank, 32)
         }
@@ -117,7 +117,7 @@ object GfRobot_Combats_glo2 {
         }
 
         fun round4() {
-            GfFunctions.toBottom1()
+            GfFuncs.toBottom1()
             robot.click(GfButtons.battle.plan).wait(300)
             robot.click(B.spot7).wait(300)
             robot.click(B.spot8).wait(300)

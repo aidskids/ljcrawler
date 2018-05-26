@@ -17,7 +17,7 @@ object GfRobot_Houqin {
     }
 
     fun cycle() {
-        GfFunctions.handleSupport()
+        GfFuncs.handleSupport()
         robot.click(GfButtons.main.combat).wait(4000)
         robot.click(GfButtons.common.returnn).wait(4000)
     }
