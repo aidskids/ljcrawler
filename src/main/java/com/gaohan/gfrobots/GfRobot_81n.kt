@@ -6,8 +6,8 @@ object GfRobot_81n {
 
     var round = 999
 
-    var fairy = true
-//        var fairy = false
+//    var fairy = true
+        var fairy = false
 
     @JvmStatic
     fun main(args: Array<String>) {

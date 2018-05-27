@@ -29,7 +29,7 @@ object GfRobot_02 {
     fun cycle() {
         if (firstTime || !battle) M.go()
         GfFuncs.toBottom1()
-        GfFuncs.formation_5(battle, M.B.airport_core, GfButtons.formation.preset_1)
+        GfFuncs.formation_5(battle, M.B.cat, GfButtons.formation.preset_1)
         M.setUnits()
         if (battle) {
             M.battle(fairy)
@@ -46,11 +46,9 @@ object GfRobot_02 {
 
     object M {
         object B {
-            //拖动至底部
-            val airport_core = makeButton(989, 324, 40)
-            val airport_dog = makeButton(393, 309, 30)
+            val cat = makeButton(989, 324, 40)
+            val dog = makeButton(393, 309, 30)
             val spot1 = makeButton(785, 210, 15)
-            //拖动至顶部
             val spot2 = makeButton(804, 843, 30)
             val spot3 = makeButton(1005, 534, 30)
             val spot4 = makeButton(784, 391, 30)
@@ -73,25 +71,19 @@ object GfRobot_02 {
 
         fun setUnits() {
             GfFuncs.toBottom1()
-            robot.click(B.airport_core).wait(500)
+            robot.click(B.cat).wait(500)
             robot.click(GfButtons.common.confirm).wait(500)
-            robot.click(B.airport_dog).wait(500)
+            robot.click(B.dog).wait(500)
             robot.click(GfButtons.common.confirm).wait(500)
             robot.click(GfButtons.common.confirm).wait(4500)
         }
 
-        fun supply_dog() {
-            robot.click(B.airport_dog).wait(500)
-            robot.click(B.airport_dog).wait(500)
-            robot.click(GfButtons.battle.supply).wait(500)
-        }
-
         fun supply_core() {
-            GfFuncs.supply(B.airport_core)
+            GfFuncs.supply(B.cat)
         }
 
         fun retreat_core() {
-            GfFuncs.retreat(B.airport_core)
+            GfFuncs.retreat(B.cat)
         }
 
         fun battle(fairy: Boolean) {
@@ -101,13 +93,11 @@ object GfRobot_02 {
 
         fun round1(fairy: Boolean) {
             if (fairy) {
-                robot.click(B.airport_core).wait(500)
-                robot.click(GfButtons.battle.fairy).wait(500)
-                robot.click(B.airport_core).wait(1500)
+                if (fairy) GfFuncs.fairy(B.cat)
                 GfFuncs.toBottom1()
             }
             robot.click(GfButtons.battle.plan).wait(300)
-            robot.click(B.airport_core).wait(300)
+            robot.click(B.cat).wait(300)
             robot.click(B.spot1).wait(300)
             GfFuncs.toTop2()
             robot.click(B.spot2).wait(300)
@@ -120,11 +110,7 @@ object GfRobot_02 {
         }
 
         fun round2(fairy: Boolean) {
-            if (fairy) {
-                robot.click(B.spot4).wait(500)
-                robot.click(GfButtons.battle.fairy).wait(500)
-                robot.click(B.spot4).wait(2500)
-            }
+            if (fairy) GfFuncs.fairy(B.spot4)
             robot.click(GfButtons.battle.plan).wait(300)
             robot.click(B.spot4).wait(300)
             robot.click(B.spot5).wait(300)
