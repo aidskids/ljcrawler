@@ -1,31 +1,14 @@
 package com.gaohan.gfrobots
 
-import java.util.*
-
 object GfRobot_81n {
 
     var round = 999
 
-//    var fairy = true
-        var fairy = false
+    var fairy = true
+//        var fairy = false
 
     @JvmStatic
-    fun main(args: Array<String>) {
-        FrameUtils.initFrame()
-        FrameUtils.switchFrame()
-        (1..round).forEach {
-            println("${Date(System.currentTimeMillis()).toLocaleString()}\t$it/${round}")
-            cycle()
-        }
-        FrameUtils.beep()
-        System.exit(999)
-    }
-
-    fun cycle() {
-        M.go()
-        M.battle()
-        GfFuncs.handleSupport()
-    }
+    fun main(args: Array<String>) = GfFuncs.sameOldFuck(round) { M.go();M.battle();GfFuncs.handleSupport() }
 
     object M {
         object B {
@@ -44,11 +27,11 @@ object GfRobot_81n {
             if (firstTime) {
                 robot.drag(GfButtons.mission.episode5, GfButtons.mission.episode0).wait(800)
                 robot.click(GfButtons.mission.episode8).wait(500)
-                firstTime = !firstTime
             }
             robot.click(GfButtons.mission.midnight).wait(500)
             robot.click(GfButtons.mission.mission1).wait(500)
             robot.click(GfButtons.mission.btnLeft).wait(6000)
+            if (firstTime) GfFuncs.minMap()
         }
 
         fun battle() {
@@ -64,7 +47,6 @@ object GfRobot_81n {
             setUnits()
             round1()
             GfFuncs.stop_battle_yes_exit()
-            GfFuncs.handleSupport()
         }
 
         fun setUnits() {
@@ -75,7 +57,7 @@ object GfRobot_81n {
         }
 
         fun round1() {
-            if (fairy) GfFuncs.fairy(B.cat)
+            GfFuncs.fairy(B.cat, fairy)
             robot.click(GfButtons.battle.plan).wait(300)
             robot.click(B.cat).wait(300)
             robot.click(B.spot1).wait(300)

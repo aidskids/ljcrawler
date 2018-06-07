@@ -1,48 +1,14 @@
 package com.gaohan.gfrobots
 
-import java.util.*
-
 object GfRobot_02 {
 
-    // 40 per round
-    var round =2
+    var round = 6
 
-    var fairy = true
-//        var fairy = false
-
-    var battle = round % 2 == 1     // 战斗/补给
+    //    var fairy = true
+    var fairy = false
 
     @JvmStatic
-    fun main(args: Array<String>) {
-        FrameUtils.initFrame()
-        FrameUtils.switchFrame()
-        (1..round).forEach {
-            val t = Date(System.currentTimeMillis()).toLocaleString()
-            println("$t\t$it/${round}\tcombat begin, battle=${battle}")
-            cycle()
-            println("$t\t$it/${round}\tcombat end")
-        }
-        FrameUtils.beep()
-        System.exit(999)
-    }
-
-    fun cycle() {
-        if (firstTime || !battle) M.go()
-        GfFuncs.toBottom1()
-        GfFuncs.formation_5(battle, M.B.cat, GfButtons.formation.preset_1)
-        M.setUnits()
-        if (battle) {
-            M.battle(fairy)
-            GfFuncs.end_battle()
-            GfFuncs.handleSupport()
-        } else {
-            M.supply_core()
-            M.retreat_core()
-            GfFuncs.stop_battle_no_exit()
-        }
-
-        battle = !battle
-    }
+    fun main(args: Array<String>) = GfFuncs.sameOldFuck(round) { M.go();M.battle();GfFuncs.handleSupport() }
 
     object M {
         object B {
@@ -56,21 +22,36 @@ object GfRobot_02 {
             val spot6 = makeButton(1492, 448, 30)
         }
 
-        val battleTime1 = 105
-        val battleTime2 = 70
         fun go() {
             robot.click(GfButtons.main.combat).wait(3500)
             if (firstTime) {
                 robot.click(GfButtons.mission.episode0).wait(500)
-                firstTime = !firstTime
             }
             robot.click(GfButtons.mission.mission2).wait(500)
             robot.click(GfButtons.mission.btnLeft).wait(4000)
+            if (firstTime) GfFuncs.minMap()
+        }
 
+        fun adjust() = GfFuncs.toBottom1()
+
+        fun battle() {
+            adjust()
+            GfFuncs.formation_5(false, M.B.cat, GfButtons.formation.preset_1)
+            setUnits()
+            GfFuncs.supply(B.cat)
+            GfFuncs.retreat(B.cat)
+            GfFuncs.stop_battle_no_exit()
+
+            adjust()
+            GfFuncs.formation_5(false, M.B.cat, GfButtons.formation.preset_1)
+            setUnits()
+            round1()
+            round2()
+            GfFuncs.end_battle()
         }
 
         fun setUnits() {
-            GfFuncs.toBottom1()
+            adjust()
             robot.click(B.cat).wait(500)
             robot.click(GfButtons.common.confirm).wait(500)
             robot.click(B.dog).wait(500)
@@ -78,24 +59,8 @@ object GfRobot_02 {
             robot.click(GfButtons.common.confirm).wait(4500)
         }
 
-        fun supply_core() {
-            GfFuncs.supply(B.cat)
-        }
-
-        fun retreat_core() {
-            GfFuncs.retreat(B.cat)
-        }
-
-        fun battle(fairy: Boolean) {
-            round1(fairy)
-            round2(fairy)
-        }
-
-        fun round1(fairy: Boolean) {
-            if (fairy) {
-                if (fairy) GfFuncs.fairy(B.cat)
-                GfFuncs.toBottom1()
-            }
+        fun round1() {
+            GfFuncs.fairy(B.cat, fairy) { adjust() }
             robot.click(GfButtons.battle.plan).wait(300)
             robot.click(B.cat).wait(300)
             robot.click(B.spot1).wait(300)
@@ -104,19 +69,19 @@ object GfRobot_02 {
             robot.click(B.spot3).wait(300)
             robot.click(B.spot4).wait(300)
             robot.click(GfButtons.common.confirm).wait(2000)
-            Thread.sleep(battleTime1 * 1000L)
+            Thread.sleep(105 * 1000L)
             robot.click(GfButtons.common.confirm).wait(500)
             Thread.sleep(13 * 1000L)
         }
 
-        fun round2(fairy: Boolean) {
-            if (fairy) GfFuncs.fairy(B.spot4)
+        fun round2() {
+            GfFuncs.fairy(B.spot4, fairy)
             robot.click(GfButtons.battle.plan).wait(300)
             robot.click(B.spot4).wait(300)
             robot.click(B.spot5).wait(300)
             robot.click(B.spot6).wait(300)
             robot.click(GfButtons.common.confirm).wait(2000)
-            Thread.sleep(battleTime2 * 1000L)
+            Thread.sleep(70 * 1000L)
         }
     }
 

@@ -8,33 +8,12 @@ import java.util.*
  * Created by gaohan on 2018/2/5.
  */
 
-object GfRobot_11 {
+object GfRobot_16 {
 
-    var round =1
+    var round = 2
 
     @JvmStatic
-    fun main(args: Array<String>) {
-        dosome()
-    }
-
-    private fun dosome() {
-        FrameUtils.initFrame()
-        FrameUtils.switchFrame()
-        (1..round).forEach {
-            val t = Date(System.currentTimeMillis()).toLocaleString()
-            println("$t\t$it/${round}\tcombat begin")
-            cycle()
-            println("$t\t$it/${round}\tcombat end")
-        }
-        FrameUtils.beep()
-        System.exit(999)
-    }
-
-    fun cycle() {
-        M.go()
-        M.battle()
-        GfFuncs.handleSupport()
-    }
+    fun main(args: Array<String>) = GfFuncs.sameOldFuck(round) { M.go();M.battle();GfFuncs.handleSupport() }
 
     object M {
         object B {
@@ -47,18 +26,18 @@ object GfRobot_11 {
             val spot6 = makeButton(1132, 507)
             val spot7 = makeButton(1395, 626)
             val spot8 = makeButton(1365, 915)
-            val spot9 = makeButton(1200, 1050,10)
+            val spot9 = makeButton(1200, 1050, 10)
         }
 
         fun go() {
             robot.click(GfButtons.main.combat).wait(4500)
             if (firstTime) {
                 robot.click(GfButtons.mission.episode1).wait(500)
-                firstTime = !firstTime
             }
             robot.drag(GfButtons.mission.mission4, GfButtons.mission.mission1).wait(800)
             robot.click(GfButtons.mission.mission6).wait(500)
             robot.click(GfButtons.mission.btnLeft).wait(4000)
+            if (firstTime) GfFuncs.minMap()
         }
 
         fun battle() {

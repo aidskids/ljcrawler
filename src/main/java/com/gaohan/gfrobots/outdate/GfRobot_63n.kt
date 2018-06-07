@@ -1,5 +1,6 @@
-package com.gaohan.gfrobots
+package com.gaohan.gfrobots.outdate
 
+import com.gaohan.gfrobots.*
 import java.util.*
 
 
@@ -63,7 +64,6 @@ object GfRobot_63n {
             if (firstTime) {
                 robot.drag(GfButtons.mission.episode5, GfButtons.mission.episode0).wait(800)
                 robot.click(GfButtons.mission.episode6).wait(500)
-                firstTime = !firstTime
             }
             robot.click(GfButtons.mission.midnight).wait(500)
             robot.click(GfButtons.mission.mission3).wait(500)

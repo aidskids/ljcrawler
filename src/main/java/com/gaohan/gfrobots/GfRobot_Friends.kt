@@ -1,34 +1,11 @@
 package com.gaohan.gfrobots
 
-import java.util.*
-
 object GfRobot_Friends {
 
-    var round = 11
+    var round = 10
 
     @JvmStatic
-    fun main(args: Array<String>) {
-        dosome()
-    }
-
-    private fun dosome() {
-        FrameUtils.initFrame()
-        FrameUtils.switchFrame()
-        (1..round).forEach {
-            val t = Date(System.currentTimeMillis()).toLocaleString()
-            println("$t\t$it/${round}\tcombat begin")
-            cycle()
-            println("$t\t$it/${round}\tcombat end")
-        }
-        FrameUtils.beep()
-        System.exit(999)
-    }
-
-    fun cycle() {
-        M.go()
-        M.battle()
-        GfFuncs.stop_battle_no_exit()
-    }
+    fun main(args: Array<String>) = GfFuncs.sameOldFuck(1) { M.go();M.battle();GfFuncs.handleSupport() }
 
     object M {
 
@@ -49,8 +26,13 @@ object GfRobot_Friends {
         }
 
         fun battle() {
+            (1..round).forEach {
+                setUnits()
+                setFriends()
+                GfFuncs.stop_battle_no_exit()
+            }
             setUnits()
-            setFriends()
+            GfFuncs.stop_battle_yes_exit()
         }
 
         fun setUnits() {

@@ -73,7 +73,7 @@ fun Robot.drag(btn1: RobotButton, btn2: RobotButton): Robot {
     val x2 = btn2.x
     val y2 = btn2.y
 //    println("drag, $x1, $y1, $x2, $y2")
-    this.moveCurl(x1, y1)
+    this.moveJump(x1, y1)
     this.hold()
     this.moveCurl(x2, y2)
     this.release()
@@ -89,10 +89,15 @@ fun Robot.clickForSec(btn: RobotButton, sec: Int): Robot {
 fun Robot.click(btn: RobotButton): Robot {
     val x = btn.x
     val y = btn.y
-//    this.moveCurl(x, y)
     this.moveJump(x, y)
     this.hold() //100ms
     this.release() //100ms
+    return this
+}
+
+fun Robot.clickMid(): Robot {
+    this.hold(InputEvent.BUTTON2_MASK)
+    this.release(InputEvent.BUTTON2_MASK)
     return this
 }
 
@@ -105,9 +110,9 @@ fun makeButton(x: Int, y: Int, radius: Int = 20): RobotButton {
     return RobotButton(x - radius, y - radius, x + radius, y + radius)
 }
 
-fun Robot.hold() = this.wait(100).mousePress(InputEvent.BUTTON1_MASK)
+fun Robot.hold(type: Int = InputEvent.BUTTON1_MASK) = this.wait(100).mousePress(type)
 
-fun Robot.release() = this.wait(100).mouseRelease(InputEvent.BUTTON1_MASK)
+fun Robot.release(type: Int = InputEvent.BUTTON1_MASK) = this.wait(100).mouseRelease(type)
 
 fun Double.ceil() = Math.ceil(this).toInt()
 fun Int.pow() = Math.pow(this.toDouble(), 2.0).toInt()

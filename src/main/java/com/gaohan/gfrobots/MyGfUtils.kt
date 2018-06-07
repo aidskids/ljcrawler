@@ -1,8 +1,22 @@
 package com.gaohan.gfrobots
 
+import java.util.*
+
 var firstTime = true
 
 object GfFuncs {
+
+    fun sameOldFuck(round: Int, cycle: () -> Unit) {
+        FrameUtils.initFrame()
+        FrameUtils.switchFrame()
+        (1..round).forEach {
+            println("${Date(System.currentTimeMillis()).toLocaleString()}\t$it/$round")
+            cycle().let { firstTime = false }
+        }
+        FrameUtils.beep()
+        System.exit(999)
+    }
+
     fun formation_5(battle: Boolean, airport: RobotButton, preset: RobotButton) {
         robot.click(airport).wait(500)
         robot.click(GfButtons.battle.formation).wait(4500)
@@ -24,6 +38,12 @@ object GfFuncs {
             robot.drag(GfButtons.formation.unit5, GfButtons.formation.unit1).wait(2000)
         }
         robot.click(GfButtons.common.returnn).wait(5000)
+    }
+
+    fun minMap() {
+        robot.clickMid().wait(300)
+        (1..10).forEach { robot.drag(GfButtons.battle.min_left, GfButtons.battle.min_right).wait(300) }
+        robot.clickMid().wait(300)
     }
 
     fun stop_battle_yes_exit() {
@@ -93,10 +113,13 @@ object GfFuncs {
         robot.click(GfButtons.battle.retreat_sure).wait(3000)
     }
 
-    fun fairy(btn: RobotButton) {
-        robot.click(btn).wait(500)
-        robot.click(GfButtons.battle.fairy).wait(500)
-        robot.click(btn).wait(2000)
+    fun fairy(btn: RobotButton, enable: Boolean, adjust: () -> Unit = {}) {
+        if (enable) {
+            robot.click(btn).wait(500)
+            robot.click(GfButtons.battle.fairy).wait(500)
+            robot.click(btn).wait(2000)
+            adjust()
+        }
     }
 
     fun spotLeft(btn: RobotButton) = makeButton((btn.x2 + btn.x1) / 2 - 150, (btn.y2 + btn.y1) / 2)
@@ -172,7 +195,9 @@ object GfButtons {
         val stop_right = RobotButton(1101, 707, 1260, 746)
         val back_to_select = makeButton(110, 65, 30)
 
-        val blank = makeButton(109, 262)
+        val blank = makeButton(105, 351, 10)
+        val min_left = makeButton(20, 980, 10)
+        val min_right = makeButton(80, 920, 10)
     }
 
     object formation {
