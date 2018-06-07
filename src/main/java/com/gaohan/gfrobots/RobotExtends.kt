@@ -72,7 +72,6 @@ fun Robot.drag(btn1: RobotButton, btn2: RobotButton): Robot {
     val y1 = btn1.y
     val x2 = btn2.x
     val y2 = btn2.y
-//    println("drag, $x1, $y1, $x2, $y2")
     this.moveJump(x1, y1)
     this.hold()
     this.moveCurl(x2, y2)
@@ -191,6 +190,8 @@ fun Robot.waitForSec(s: Int): Robot {
     Thread.sleep(s * 1000L)
     return this
 }
+
+//=============================================================================================
 
 fun setClip(data: String?) {
     val clipboard = Toolkit.getDefaultToolkit().systemClipboard
