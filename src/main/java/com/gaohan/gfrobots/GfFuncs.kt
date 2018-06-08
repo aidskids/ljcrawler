@@ -4,104 +4,112 @@ import java.util.*
 
 object GfFuncs {
 
-    var firstTime = false
+    private var firstTime = false
 
-    fun fuck(round: Int, cycle: () -> Unit) {
+    fun initFrame(block: () -> Unit) {
         FrameUtils.initFrame()
         FrameUtils.switchFrame()
-
-        firstTime = true
-        (1..round).forEach {
-            println("${Date(System.currentTimeMillis()).toLocaleString()}\t$it/$round")
-            cycle().let { firstTime = false }
-        }
-
+        block()
         FrameUtils.beep()
         System.exit(999)
     }
 
+    fun loop(round: Int, cycle: () -> Unit) {
+        firstTime = true
+        (1..round).forEach {
+            println("${Date(System.currentTimeMillis()).toLocaleString()}\t$it/$round")
+            cycle()
+            firstTime = false
+        }
+    }
+
     fun go(episode: Int, mission: Int, midnight: Boolean = false) {
         val episodeBtn = when (episode) {
-            0 -> GfButtons.mission.episode0
-            1 -> GfButtons.mission.episode1
-            2 -> GfButtons.mission.episode2
-            3 -> GfButtons.mission.episode3
-            4 -> GfButtons.mission.episode4
-            5 -> GfButtons.mission.episode5
-            6 -> GfButtons.mission.episode6
-            7 -> GfButtons.mission.episode7
-            8 -> GfButtons.mission.episode8
-            9 -> GfButtons.mission.episode9
-            10 -> GfButtons.mission.episode10
+            0 -> GfButtons.combat.episode0
+            1 -> GfButtons.combat.episode1
+            2 -> GfButtons.combat.episode2
+            3 -> GfButtons.combat.episode3
+            4 -> GfButtons.combat.episode4
+            5 -> GfButtons.combat.episode5
+            6 -> GfButtons.combat.episode6
+            7 -> GfButtons.combat.episode7
+            8 -> GfButtons.combat.episode8
+            9 -> GfButtons.combat.episode9
+            10 -> GfButtons.combat.episode10
             else -> throw Exception()
         }
-        val missionBtn = when (episode) {
-            1 -> GfButtons.mission.mission1
-            2 -> GfButtons.mission.mission2
-            3 -> GfButtons.mission.mission4
-            4 -> GfButtons.mission.mission5
-            5 -> GfButtons.mission.mission5
-            6 -> GfButtons.mission.mission6
+        val missionBtn = when (mission) {
+            1 -> GfButtons.combat.mission1
+            2 -> GfButtons.combat.mission2
+            3 -> GfButtons.combat.mission4
+            4 -> GfButtons.combat.mission5
+            5 -> GfButtons.combat.mission5
+            6 -> GfButtons.combat.mission6
             else -> throw Exception()
         }
         val drag1 = when (episodeBtn) {
-            GfButtons.mission.episode6,
-            GfButtons.mission.episode7,
-            GfButtons.mission.episode8,
-            GfButtons.mission.episode9,
-            GfButtons.mission.episode10 -> true
+            GfButtons.combat.episode6,
+            GfButtons.combat.episode7,
+            GfButtons.combat.episode8,
+            GfButtons.combat.episode9,
+            GfButtons.combat.episode10 -> true
             else -> false
         }
         val drag2 = when (missionBtn) {
-            GfButtons.mission.mission5,
-            GfButtons.mission.mission6 -> true
+            GfButtons.combat.mission5,
+            GfButtons.combat.mission6 -> true
             else -> false
         }
         robot.click(GfButtons.main.combat).wait(3500)
-        if (firstTime && drag1) robot.drag(GfButtons.mission.episode5, GfButtons.mission.episode0).wait(800)
+        if (firstTime && drag1) robot.drag(GfButtons.combat.episode5, GfButtons.combat.episode0).wait(800)
         if (firstTime) robot.click(episodeBtn).wait(500)
-        if (midnight) robot.click(GfButtons.mission.midnight).wait(500)
-        if (drag2) robot.drag(GfButtons.mission.mission4, GfButtons.mission.mission1).wait(800)
+        if (midnight) robot.click(GfButtons.combat.midnight).wait(500)
+        if (drag2) robot.drag(GfButtons.combat.mission4, GfButtons.combat.mission1).wait(800)
         robot.click(missionBtn).wait(500)
-        robot.click(GfButtons.mission.btnLeft).wait(4000)
+        robot.click(GfButtons.combat.btnLeft).wait(4000)
         if (firstTime) GfFuncs.minMap()
     }
 
     fun minMap() {
-        robot.clickMid().wait(300)
-        (1..10).forEach { robot.drag(GfButtons.battle.min_map_left, GfButtons.battle.min_map_right).wait(300) }
-        robot.clickMid().wait(300)
+        (1..3).forEach {
+            robot.clickMid()
+            robot.drag(GfButtons.battle.min_map_left, GfButtons.battle.min_map_right)
+            robot.clickMid()
+            robot.wait(400)
+            robot.click(GfButtons.unitInfo.cancel)
+            robot.wait(400)
+            robot.click(GfButtons.battle.blank)
+        }
     }
 
-    fun formPreset(airport: RobotButton, preset: Int) {
+    fun formPreset(airport: RobotButton, preset: Int, battle: Boolean = true) {
         val presetBtn = when (preset) {
-            1 -> GfButtons.unitDetail.preset_1
-            2 -> GfButtons.unitDetail.preset_2
+            1 -> GfButtons.preset.preset1
+            2 -> GfButtons.preset.preset2
             else -> throw Exception()
         }
         robot.click(airport).wait(500)
-        robot.click(GfButtons.unitSummary.detail).wait(4500)
-        robot.click(GfButtons.common.confirm).wait(3000)
-        robot.click(GfButtons.unitDetail.preset_menu).wait(2500)
-        robot.click(presetBtn).wait(2500)
-        robot.click(GfButtons.common.confirm).wait(3000)
-        robot.click(GfButtons.common.confirm).wait(3000)
-        robot.click(GfButtons.common.returnn).wait(5000)
-    }
-
-    fun form5to1(airport: RobotButton) {
-        robot.click(airport).wait(500)
-        robot.click(GfButtons.unitSummary.detail).wait(4500)
-        robot.click(GfButtons.unitDetail.unit1).wait(500)
-        robot.click(GfButtons.unitDetail.remove_unit).wait(2000)
-        robot.click(GfButtons.unitDetail.unit2).wait(500)
-        robot.click(GfButtons.unitDetail.remove_unit).wait(2000)
-        robot.click(GfButtons.unitDetail.unit3).wait(500)
-        robot.click(GfButtons.unitDetail.remove_unit).wait(2000)
-        robot.click(GfButtons.unitDetail.unit4).wait(500)
-        robot.click(GfButtons.unitDetail.remove_unit).wait(2000)
-        robot.drag(GfButtons.unitDetail.unit5, GfButtons.unitDetail.unit1).wait(2000)
-        robot.click(GfButtons.common.returnn).wait(5000)
+        robot.click(GfButtons.unitInfo.edit).wait(4500)
+        if (firstTime || battle) {
+            robot.click(GfButtons.formation.ech1).wait(1000)
+            robot.click(GfButtons.formation.preset).wait(3000)
+            robot.click(GfButtons.preset.presets).wait(2500)
+            robot.click(presetBtn).wait(2500)
+            robot.click(GfButtons.preset.usePreset).wait(3000)
+            robot.click(GfButtons.preset.confirm).wait(3000)
+        }
+        if (!battle) {
+            robot.click(GfButtons.formation.unit1).wait(500)
+            robot.click(GfButtons.itemSelect.removeUnit).wait(2000)
+            robot.click(GfButtons.formation.unit2).wait(500)
+            robot.click(GfButtons.itemSelect.removeUnit).wait(2000)
+            robot.click(GfButtons.formation.unit3).wait(500)
+            robot.click(GfButtons.itemSelect.removeUnit).wait(2000)
+            robot.click(GfButtons.formation.unit4).wait(500)
+            robot.click(GfButtons.itemSelect.removeUnit).wait(2000)
+            robot.drag(GfButtons.formation.unit5, GfButtons.formation.unit1).wait(2000)
+        }
+        robot.click(GfButtons.formation.returnToBase).wait(5000)
     }
 
     fun prepUnits(vararg objs: Any) {
@@ -109,7 +117,7 @@ object GfFuncs {
             if (it is RobotButton) setUnit(it)
             if (it is Pair<*, *>) setUnit(it.first as RobotButton, it.second as RobotButton)
         }
-        GfFuncs.nextTurn(5)
+        GfFuncs.endTurn(5)
     }
 
     fun battleRetreat() {
@@ -123,7 +131,7 @@ object GfFuncs {
     }
 
     fun battleComplete() {
-        (1..14).forEach { robot.click(GfButtons.common.confirm).wait(300) }
+        (1..14).forEach { robot.click(GfButtons.battle.endTurn).wait(300) }
         (1..14).forEach { robot.click(GfButtons.main.empty).wait(300) }
     }
 
@@ -135,27 +143,27 @@ object GfFuncs {
             if (it is Function0<*>) it.invoke()
             if (it is RobotButton) robot.click(it).wait(300)
         }
-        robot.click(GfButtons.common.confirm).waitForSec(sec)
+        robot.click(GfButtons.battle.exePlan).waitForSec(sec)
     }
 
-    fun nextTurn(sec: Int) {
-        robot.click(GfButtons.common.confirm).clickForSec(GfButtons.battle.blank, sec)
+    fun endTurn(sec: Int) {
+        robot.click(GfButtons.battle.endTurn).clickForSec(GfButtons.battle.blank, sec)
     }
 
-    fun setUnit(btn: RobotButton, ech: RobotButton? = null, friend: Boolean = false) {
-        robot.click(btn).wait(500)
+    fun setUnit(airport: RobotButton, ech: RobotButton? = null, friend: Boolean = false) {
+        robot.click(airport).wait(500)
         if (ech != null) robot.click(ech).wait(500)
         if (friend) {
             robot.wait(4500)
             robot.click(makeButton(666, 291)).wait(2000)
         }
-        robot.click(GfButtons.common.confirm).wait(2500)
+        robot.click(GfButtons.unitInfo.confirm).wait(2500)
     }
 
     fun supply(btn: RobotButton) {
         robot.click(btn).wait(300)
         robot.click(btn).wait(300)
-        robot.click(GfButtons.unitSummary.supply).wait(2200)
+        robot.click(GfButtons.unitInfo.supply).wait(2200)
         robot.click(GfButtons.battle.blank).wait(300)
         robot.click(GfButtons.battle.blank).wait(300)
     }
@@ -163,8 +171,8 @@ object GfFuncs {
     fun retreat(btn: RobotButton) {
         robot.click(btn).wait(300)
         robot.click(btn).wait(300)
-        robot.click(GfButtons.unitSummary.retreat).wait(500)
-        robot.click(GfButtons.unitSummary.retreat_sure).wait(3000)
+        robot.click(GfButtons.unitInfo.retreat).wait(500)
+        robot.click(GfButtons.unitInfo.retreat_sure).wait(3000)
     }
 
     fun fairy(btn: RobotButton) {
@@ -180,5 +188,19 @@ object GfFuncs {
     fun leftOf(btn: RobotButton) = makeButton((btn.x2 + btn.x1) / 2 - 150, (btn.y2 + btn.y1) / 2)
 
     fun rightOf(btn: RobotButton) = makeButton((btn.x2 + btn.x1) / 2 + 150, (btn.y2 + btn.y1) / 2)
+
+    fun refresh() {
+        robot.click(GfButtons.main.combat).waitForSec(5)
+        robot.click(GfButtons.combat.returnToBase).waitForSec(5)
+    }
+
+    fun fixFirt() {
+        robot.click(GfButtons.main.restore).wait(3500)
+        robot.click(GfButtons.restore.pos6).wait(1000)
+        robot.click(GfButtons.itemSelect.byIndex(0, 0)).wait(300)
+        robot.click(GfButtons.restore.confirm).wait(300)
+        robot.click(GfButtons.restore.confirm2).wait(2000)
+        robot.click(GfButtons.restore.returnToBase).wait(2000)
+    }
 
 }

@@ -2,31 +2,25 @@ package com.gaohan.gfrobots
 
 class Houqin {
     init {
-        FrameUtils.initFrame()
-        FrameUtils.switchFrame()
         while (true) {
             (1..20).forEach {
-                val r = Math.random()
-                robot.waitForSec(30 + (30 * r).toInt())
+                robot.waitForSec(5 + (5 * Math.random()).toInt())
                 robot.click(GfButtons.main.houqin)
             }
-            robot.click(GfButtons.main.combat).waitForSec(5)
-            robot.click(GfButtons.common.returnn).waitForSec(5)
+            GfFuncs.refresh()
         }
     }
 }
 
-
 class Friends(val round: Int) {
-
     init {
-        GfFuncs.fuck(1) { battle().let { GfFuncs.handleSupport() } }
+        GfFuncs.loop(1) { battle().let { GfFuncs.handleSupport() } }
     }
 
     fun battle() {
         GfFuncs.go(0, 2).let { B.adjust() }
         (1..(round)).forEach {
-            GfFuncs.prepUnits(Pair(B.cat, GfButtons.unitSummary.ech6_2))
+            GfFuncs.prepUnits(Pair(B.cat, GfButtons.unitInfo.ech6_no2))
             round1()
             if (it < round) GfFuncs.battleRestart().let { B.adjust() }
             if (it == round) GfFuncs.battleRetreat()
@@ -36,8 +30,8 @@ class Friends(val round: Int) {
     fun round1() {
         robot.click(B.cat).wait(500)
         robot.click(B.spot1).wait(2500)
-        GfFuncs.setUnit(B.dog, GfButtons.unitSummary.ech5_fri, true)
-        GfFuncs.setUnit(B.cat, GfButtons.unitSummary.ech5_fri, true)
+        GfFuncs.setUnit(B.dog, GfButtons.unitInfo.ech5_friend, true)
+        GfFuncs.setUnit(B.cat, GfButtons.unitInfo.ech5_friend, true)
     }
 
     object B {
@@ -52,17 +46,17 @@ class Friends(val round: Int) {
 class M02(val round: Int, val fairy: Boolean) {
 
     init {
-        GfFuncs.fuck(round) { battle().let { GfFuncs.handleSupport() } }
+        GfFuncs.loop(round) { battle().let { GfFuncs.handleSupport() } }
     }
 
     fun battle() {
         GfFuncs.go(0, 2).let { B.adjust() }
-        GfFuncs.form5to1(B.cat).let { B.adjust() }
+        GfFuncs.formPreset(B.cat, 1, false).let { B.adjust() }
         GfFuncs.prepUnits(B.cat, B.dog)
         GfFuncs.supply(B.cat).let { GfFuncs.retreat(B.cat) }.let { GfFuncs.battleRestart() }.let { B.adjust() }
         GfFuncs.formPreset(B.cat, 1).let { B.adjust() }
         GfFuncs.prepUnits(B.cat, B.dog)
-        round1().let { GfFuncs.nextTurn(14) }
+        round1().let { GfFuncs.endTurn(14) }
         round2().let { GfFuncs.battleComplete() }
     }
 
@@ -93,12 +87,12 @@ class M02(val round: Int, val fairy: Boolean) {
 class M81n(val round: Int, val fairy: Boolean) {
 
     init {
-        GfFuncs.fuck(round) { battle().let { GfFuncs.handleSupport() } }
+        GfFuncs.loop(round) { battle().let { GfFuncs.handleSupport() } }
     }
 
     fun battle() {
         GfFuncs.go(8, 1, true).let { B.adjust() }
-        GfFuncs.form5to1(B.cat).let { B.adjust() }
+        GfFuncs.formPreset(B.cat, 2, false).let { B.adjust() }
         GfFuncs.prepUnits(B.cat, B.dog)
         GfFuncs.supply(B.cat).let { GfFuncs.retreat(B.cat) }.let { GfFuncs.battleRestart() }.let { B.adjust() }
         GfFuncs.formPreset(B.cat, 2).let { B.adjust() }
@@ -129,15 +123,15 @@ class M81n(val round: Int, val fairy: Boolean) {
 class M16(val round: Int) {
 
     init {
-        GfFuncs.fuck(round) { battle().let { GfFuncs.handleSupport() } }
+        GfFuncs.loop(round) { battle().let { GfFuncs.handleSupport() } }
     }
 
     fun battle() {
-        GfFuncs.go(1, 6)
+        GfFuncs.go(1, 6).let { B.adjust() }
         GfFuncs.prepUnits(B.spot0)
-        round1().let { GfFuncs.nextTurn(22) }.let { B.adjust() }
-        round2().let { GfFuncs.nextTurn(28) }.let { B.adjust() }
-        round3().let { GfFuncs.nextTurn(35) }.let { B.adjust() }
+        round1().let { GfFuncs.endTurn(22) }.let { B.adjust() }
+        round2().let { GfFuncs.endTurn(28) }.let { B.adjust() }
+        round3().let { GfFuncs.endTurn(35) }.let { B.adjust() }
         round4().let { GfFuncs.battleComplete() }
     }
 

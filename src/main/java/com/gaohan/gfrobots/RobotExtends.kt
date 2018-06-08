@@ -74,7 +74,7 @@ fun Robot.drag(btn1: RobotButton, btn2: RobotButton): Robot {
     val y2 = btn2.y
     this.moveJump(x1, y1)
     this.hold()
-    this.moveCurl(x2, y2)
+    this.moveLine(x2, y2)
     this.release()
     return this
 }
