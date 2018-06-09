@@ -4,17 +4,11 @@ object Gf_Main {
 
     @JvmStatic
     fun main(args: Array<String>) = GfFuncs.initFrame {
-
-        (1..28).forEach {
-            M02(1, false)
-            GfFuncs.fixFirt()
-            M81n(1, true)
-            GfFuncs.refresh()
-        }
-
+        HotMix()
     }
 
     fun index() {
+        HotMix()
         Houqin()
         Friends(10)
         M02(18, false)
